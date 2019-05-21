@@ -1,4 +1,3 @@
-const PassportClient = require('./PassportClient');
 const { Cache } = require('memory-cache');
 
 const unauthorized = res => {
@@ -51,4 +50,4 @@ module.exports = ({ client, userEndpoint, requireAuth, cacheTime }) => {
 
         next();
     };
-}
+};

@@ -28,7 +28,7 @@ class PassportClient {
         };
 
         return await this._captureResponse(
-            this.client.post(`/oauth/token`, body)
+            this.client.post('/oauth/token', body)
         );
     }
 
