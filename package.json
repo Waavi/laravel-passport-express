@@ -14,5 +14,29 @@
   },
   "scripts": {
     "test": "mocha test/test.js --exit"
-  }
+  },
+  "name": "laravel-passport-express",
+  "version": "1.0.0",
+  "description": "Express middleware to authenticate against a Laravel Passport server",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Waavi/laravel-passport-express.git"
+  },
+  "keywords": [
+    "laravel",
+    "passport",
+    "express",
+    "middleware",
+    "auth"
+  ],
+  "author": "info@waavi.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Waavi/laravel-passport-express/issues"
+  },
+  "homepage": "https://github.com/Waavi/laravel-passport-express#readme"
 }
