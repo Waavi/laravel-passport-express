@@ -6,27 +6,20 @@ const DEFAULT_JWT_CACHE_TIME = 5 * 60 * 1000; // 5 min
 module.exports = ({ url, clientId, clientSecret }) => {
     const client = new PassportClient({ url, clientId, clientSecret });
 
-    const _auth = async (body, res) => {
-        const clientRes = await client.requestAccessToken(body);
-        res.status(clientRes.status).json(clientRes.data);
-    };
-
     return {
-        // Allow auth with any grant type
-        async auth(req, res) {
-            return await _auth(req.body, res);
-        },
+        // Expose possport client instance to the user,
+        // in case its useful to use it directly.
+        client,
 
-        // Attempt authentication only with password grant
-        async passwordAuth(req, res) {
-            const { username, password } = req.body;
-            return await _auth({ grant_type: 'password', username, password }, res);
-        },
-
-        // Attempt authentication only with social grant
-        async socialAuth(req, res) {
-            const { network, access_token } = req.body;
-            return await _auth({ grant_type: 'social', network, access_token }, res);
+        // Request an access token with a grant_type
+        // supported by the Passport server.
+        //
+        // The client will add the configured clientId and
+        // clientSecret to the request, and forward it to
+        // the Passport server.
+        async requestToken(req, res) {
+            const tokenResp = await client.requestAccessToken(req.body);
+            res.status(tokenResp.status).json(tokenResp.data);
         },
 
         // Builds a middleware to validate the bearer token of an
@@ -37,7 +30,7 @@ module.exports = ({ url, clientId, clientSecret }) => {
         // application.
         //
         // If successful, the user's data is published in `req.user`.
-        jwtValidator({
+        authToken({
             userEndpoint = '/user',
             requireAuth = true,
             cacheTime = DEFAULT_JWT_CACHE_TIME

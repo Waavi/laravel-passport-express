@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { assert, request } = require('chai').use(require('chai-http'));
 const PassportServerMock = require('./PassportServerMock');
+const passportClient = require('../');
 
 const PASSPORT_CONFIG = {
     url: 'https://passport.example.com',
@@ -16,19 +17,19 @@ describe('Authentication', () => {
     const app = express();
 
     before(() => {
-        const passportClient = require('../')(PASSPORT_CONFIG);
+        const passport = passportClient(PASSPORT_CONFIG);
         app.use(bodyParser.json());
-        app.post('/oauth/token', passportClient.auth);
+        app.post('/oauth/token', passport.requestToken);
         app.get('/auth-required',
-            passportClient.jwtValidator(),
+            passport.authToken(),
             (req, res) => res.send('Hello World')
         );
         app.get('/auth-optional',
-            passportClient.jwtValidator({ requireAuth: false }),
+            passport.authToken({ requireAuth: false }),
             (req, res) => res.json(req.user)
         );
         app.get('/invalid-user-endpoint',
-            passportClient.jwtValidator({ userEndpoint: '/unknown' }),
+            passport.authToken({ userEndpoint: '/unknown' }),
             (req, res) => res.json(req.user)
         );
         app.listen(55723 /* port */);

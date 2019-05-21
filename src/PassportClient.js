@@ -34,7 +34,7 @@ class PassportClient {
 
     // Extract the access token from the authorization header
     // string, if it has the format `Bearer ACCESS_TOKEN`.
-    extractAccessToken(bearerToken) {
+    _extractAccessToken(bearerToken) {
         if (bearerToken.toLowerCase().indexOf('bearer ') === 0) {
             return bearerToken.substring('bearer '.length);
         }
@@ -45,7 +45,7 @@ class PassportClient {
     // Perform a request authenticating with the given access token.
     async requestWithToken(accessToken, endpoint) {
         // Remove leading 'Bearer ', if set
-        accessToken = this.extractAccessToken(accessToken || '');
+        accessToken = this._extractAccessToken(accessToken || '');
 
         const headers = { Authorization: `Bearer ${accessToken}` };
 
