@@ -1,3 +1,5 @@
+/*globals describe, it, before */
+
 require('mocha');
 const express = require('express');
 const bodyParser = require('body-parser');
